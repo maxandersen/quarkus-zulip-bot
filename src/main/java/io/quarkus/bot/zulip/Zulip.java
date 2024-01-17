@@ -5,11 +5,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -25,6 +20,11 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * Interacts with the Zulip server using the Zulip REST API (https://zulip.com/api/rest)
@@ -70,11 +70,11 @@ public class Zulip {
     /**
      * @see {https://zulip.com/api/send-message}
      */
-    public void sendMessage(String subject, String message) {
+    public void sendMessage(String subject, int streamid, String message) {
         List<NameValuePair> form = new ArrayList<>();
         form.add(new BasicNameValuePair("type", "stream"));
-        form.add(new BasicNameValuePair("to", "general"));
-        form.add(new BasicNameValuePair("subject", subject));
+       // form.add(new BasicNameValuePair("to", to));
+        form.add(new BasicNameValuePair("stream_id", "" + streamid));
         form.add(new BasicNameValuePair("content", message));
         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(form, Consts.UTF_8);
 
